@@ -64,6 +64,7 @@ class GlobalsController extends CpController
 
         $values = [
             'title' => $set->title(),
+            'icon' => $set->icon(),
             'blueprint' => optional($set->blueprint())->handle(),
             'sites' => Site::all()->map(function ($site) use ($set) {
                 return [
@@ -98,6 +99,7 @@ class GlobalsController extends CpController
 
         $set
             ->title($values['title'])
+            ->icon($values['icon'])
             ->blueprint($values['blueprint']);
 
         if (Site::multiEnabled()) {
@@ -163,6 +165,13 @@ class GlobalsController extends CpController
                         'type' => 'text',
                         'instructions' => __('statamic::messages.globals_configure_title_instructions'),
                         'validate' => 'required',
+                        'width' => '66',
+                    ],
+                    'icon' => [
+                        'display' => __('Icon'),
+                        'instructions' => __('statamic::messages.globals_configure_icon_instructions'),
+                        'type' => 'icon',
+                        'width' => '33',
                     ],
                 ],
             ],

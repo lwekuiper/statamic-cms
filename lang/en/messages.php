@@ -148,6 +148,7 @@ return [
     'global_set_no_fields_description' => 'Add fields to the blueprint or set data in the YAML file.',
     'globals_blueprint_instructions' => 'Controls the fields to be displayed when editing the variables.',
     'globals_configure_handle_instructions' => 'Used to reference this global set on the frontend. This cannot be easily changed later.',
+    'globals_configure_icon_instructions' => 'Pick an icon to represent this global set.',
     'globals_configure_intro' => 'A global set is a group of variables available across all front-end pages.',
     'globals_configure_title_instructions' => 'Use a noun representing the set\'s contents, such as \'Brand\' or \'Company\'',
     'impersonate_action_confirmation' => 'You will be logged in as this user. You can return to your account using the avatar menu.',
