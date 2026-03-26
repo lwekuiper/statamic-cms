@@ -197,6 +197,7 @@ class CoreNav
                         return Nav::item($globalSet->title())
                             ->url($localized ? $localized->editUrl() : $globalSet->editUrl())
                             ->can('view', $globalSet)
+                            ->icon($globalSet->icon())
                             ->extra([
                                 'breadcrumbs' => [
                                     'configure_url' => User::current()->can('edit', $globalSet) ? $globalSet->editUrl() : null,
