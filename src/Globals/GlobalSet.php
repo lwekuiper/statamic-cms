@@ -25,9 +25,15 @@ class GlobalSet implements Contract
     use ExistsAsFile, FluentlyGetsAndSets;
 
     protected $title;
+
     protected $handle;
+
+    protected $icon;
+
     protected $afterSaveCallbacks = [];
+
     protected $withEvents = true;
+
     private $sites = [];
 
     public function id()
@@ -46,6 +52,16 @@ class GlobalSet implements Contract
             ->fluentlyGetOrSet('title')
             ->getter(function ($title) {
                 return $title ?? ucfirst($this->handle);
+            })
+            ->args(func_get_args());
+    }
+
+    public function icon($icon = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('icon')
+            ->getter(function ($icon) {
+                return $icon ?? 'globals';
             })
             ->args(func_get_args());
     }
@@ -169,6 +185,7 @@ class GlobalSet implements Contract
     {
         return Arr::removeNullValues([
             'title' => $this->title(),
+            'icon' => $this->icon,
             'sites' => Site::multiEnabled() ? $this->origins()->all() : null,
         ]);
     }
