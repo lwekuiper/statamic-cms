@@ -17,9 +17,10 @@ use Tests\TestCase;
 class GlobalsStoreTest extends TestCase
 {
     private $tempDir;
+
     private $store;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -70,6 +71,31 @@ class GlobalsStoreTest extends TestCase
         $this->assertEquals('example', $item->id());
         $this->assertEquals('example', $item->handle());
         $this->assertEquals('Example', $item->title());
+    }
+
+    #[Test]
+    public function it_makes_global_set_instances_from_files_with_icon()
+    {
+        $contents = "title: Example\nicon: custom-icon\ndata:\n  foo: bar";
+        file_put_contents($this->tempDir.'/example.yaml', $contents);
+
+        $item = $this->store->makeItemFromFile(Path::tidy($this->tempDir.'/example.yaml'), $contents);
+
+        $this->assertInstanceOf(GlobalSet::class, $item);
+        $this->assertEquals('example', $item->handle());
+        $this->assertEquals('Example', $item->title());
+        $this->assertEquals('custom-icon', $item->icon());
+    }
+
+    #[Test]
+    public function it_makes_global_set_instances_with_default_icon()
+    {
+        $contents = "title: Example\ndata:\n  foo: bar";
+        file_put_contents($this->tempDir.'/example.yaml', $contents);
+
+        $item = $this->store->makeItemFromFile(Path::tidy($this->tempDir.'/example.yaml'), $contents);
+
+        $this->assertEquals('globals', $item->icon());
     }
 
     #[Test]

@@ -30,6 +30,18 @@ class GlobalSetTest extends TestCase
     use PreventSavingStacheItemsToDisk;
 
     #[Test]
+    public function it_gets_and_sets_the_icon()
+    {
+        $set = new GlobalSet;
+
+        $this->assertEquals('globals', $set->icon());
+
+        $return = $set->icon('custom-icon');
+        $this->assertEquals($set, $return);
+        $this->assertEquals('custom-icon', $set->icon());
+    }
+
+    #[Test]
     public function it_gets_and_sets_sites_and_origins()
     {
         $set = new GlobalSet;
@@ -88,6 +100,28 @@ class GlobalSetTest extends TestCase
 
         $expected = <<<'EOT'
 title: 'The title'
+sites:
+  en: null
+  fr: en
+
+EOT;
+        $this->assertEquals($expected, $set->fileContents());
+    }
+
+    #[Test]
+    public function it_gets_file_contents_for_saving_with_icon()
+    {
+        $this->setSites([
+            'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://test.com/'],
+            'fr' => ['name' => 'French', 'locale' => 'fr_FR', 'url' => 'http://fr.test.com/'],
+            'de' => ['name' => 'German', 'locale' => 'de_DE', 'url' => 'http://test.com/de/'],
+        ]);
+
+        $set = (new GlobalSet)->title('The title')->icon('custom-icon')->sites(['en' => null, 'fr' => 'en']);
+
+        $expected = <<<'EOT'
+title: 'The title'
+icon: custom-icon
 sites:
   en: null
   fr: en
