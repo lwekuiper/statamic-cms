@@ -1539,6 +1539,18 @@ class EntryQueryBuilderTest extends TestCase
 
         $this->assertCount($count, Entry::all());
     }
+
+    #[Test]
+    public function paginating_with_a_page_that_overflows_the_offset_returns_an_empty_result()
+    {
+        $this->createDummyCollectionAndEntries();
+
+        // (PHP_INT_MAX - 1) * $perPage overflows to a float, which the Stache
+        // driver would otherwise forward to array_slice() and crash on.
+        $results = Entry::query()->forPage(PHP_INT_MAX, 6)->get();
+
+        $this->assertCount(0, $results);
+    }
 }
 
 class CustomScope extends Scope

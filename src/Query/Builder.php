@@ -81,7 +81,11 @@ abstract class Builder implements Contract
     {
         $perPage = $perPage ?: $this->defaultPerPageSize();
 
-        return $this->offset(($page - 1) * $perPage)->limit($perPage);
+        $offset = ($page - 1) * $perPage;
+
+        // A large enough $page overflows the multiplication to a float, which then
+        // breaks drivers that forward the offset to array_slice(). Keep it an int.
+        return $this->offset(is_float($offset) ? PHP_INT_MAX : $offset)->limit($perPage);
     }
 
     protected function defaultPerPageSize()
